@@ -14,7 +14,7 @@
 import logging
 import os
 import sys
-from unicodedata import normalize
+from strdata import normalize
 
 import pytest
 

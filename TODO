@@ -22,14 +22,14 @@ Features to Add:
 	workflow.py:
 		- Add interface to `notify.notify()`.
 		- `workflow:magic` should allow ↩ and ⇥ to expand and run magic arguments
-		- `filter()` should warn when comparing Unicode and `str` objects @priority(3)
+		- `filter()` should warn when comparing str and `str` objects @priority(3)
 		- `max_age` argument of `cached_data()` should default to 0 (always return cached data) @v2 @priority(1)
 
 
 	Docs:
 		- Add "Quick Start" section
 		- Add tutorial using `workflow.web`
-		- Add tutorial using filesystem/Unicode
+		- Add tutorial using filesystem/str
 
 
 Features to Consider:
@@ -124,7 +124,7 @@ Archive:
 	 @project(workflow.py)
 	- Update list of "magic" arguments in tutorial2.rst @done(14-03-07 19:02)
 	 @project(Docs)
-	- Normalise Unicode @done(14-03-06 20:34)
+	- Normalise str @done(14-03-06 20:34)
 	 @project(web.py)
 	- Add magic arguments for opening cache/data directories in Finder @done(14-03-05 00:10)
 	 @project(workflow.py)

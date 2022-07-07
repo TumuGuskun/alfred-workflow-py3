@@ -56,7 +56,7 @@ def testfile(request):
 
 @pytest.mark.xfail(reason="unnecessary in python3")
 def test_unicodify():
-    """Unicode decoding."""
+    """str decoding."""
     data = [
         # input, normalisation form, expected output
         ("Köln", None, "Köln"),
@@ -396,7 +396,8 @@ def test_appinfo():
         ("Safari", "com.apple.Safari", "/Applications/Safari.app"),
         ("Console", "com.apple.Console", "/Applications/Utilities/Console.app"),
         # Catalina
-        ("Console", "com.apple.Console", "/System/Applications/Utilities/Console.app"),
+        ("Console", "com.apple.Console",
+         "/System/Applications/Utilities/Console.app"),
     ]:
 
         if not os.path.exists(path):

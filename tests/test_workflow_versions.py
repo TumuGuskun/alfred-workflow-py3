@@ -11,7 +11,7 @@ import pytest
 
 from workflow.update import Version
 from workflow.workflow import Workflow
-from workflow.workflow3 import Workflow3
+from workflow.workflow import Workflow3
 
 from .conftest import WORKFLOW_VERSION, env
 from .util import VersionFile

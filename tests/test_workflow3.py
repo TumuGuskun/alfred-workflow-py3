@@ -318,7 +318,8 @@ def test_modifiers(infopl):
 
     it = wf.add_item("Title", "Subtitle", arg="value", valid=False)
     it.setvar("prevar", "preval")
-    mod = it.add_modifier("cmd", subtitle="Subtitle2", arg="value2", valid=True)
+    mod = it.add_modifier("cmd", subtitle="Subtitle2",
+                          arg="value2", valid=True)
     it.setvar("postvar", "postval")
     wf.setvar("wfpostvar", "wfpostval")
     mod.setvar("modvar", "hello")
@@ -382,7 +383,8 @@ def test_modifier_icon(infopl):
     )
     o = mod.obj
     assert "icon" in o
-    assert o["icon"] == {"path": "/Applications/Safari.app", "type": "fileicon"}
+    assert o["icon"] == {
+        "path": "/Applications/Safari.app", "type": "fileicon"}
 
 
 def test_item_config(infopl):
@@ -433,12 +435,14 @@ def test_default_directories(alfred4):
 
     _test_default_directories(
         expanduser("~/Library/Application Support/Alfred/Workflow Data/"),
-        expanduser("~/Library/Caches/com.runningwithcrayons.Alfred/" "Workflow Data/"),
+        expanduser(
+            "~/Library/Caches/com.runningwithcrayons.Alfred/" "Workflow Data/"),
     )
 
     with env(alfred_workflow_data=None, alfred_workflow_cache=None):
         _test_default_directories(
-            expanduser("~/Library/Application Support/Alfred/" "Workflow Data/"),
+            expanduser(
+                "~/Library/Application Support/Alfred/" "Workflow Data/"),
             expanduser(
                 "~/Library/Caches/com.runningwithcrayons.Alfred/" "Workflow Data/"
             ),
@@ -530,8 +534,8 @@ def test_variables_config():
     assert v.obj == {"alfredworkflow": {"config": {"var": "val"}}}
 
 
-def test_variables_unicode():
-    """Unicode handled correctly."""
+def test_variables_str():
+    """str handled correctly."""
     v = Variables(arg="fübar", englisch="englisch")
     v["französisch"] = "französisch"
     v.config["über"] = "über"

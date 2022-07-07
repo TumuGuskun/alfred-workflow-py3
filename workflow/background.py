@@ -1,12 +1,3 @@
-# encoding: utf-8
-#
-# Copyright (c) 2014 deanishe@deanishe.net
-#
-# MIT Licence. See http://opensource.org/licenses/MIT
-#
-# Created on 2014-04-06
-#
-
 """This module provides an API to run commands in background processes.
 
 Combine with the :ref:`caching API <caching-data>` to work from cached data
@@ -17,62 +8,69 @@ and examples.
 """
 
 
+from logging import Logger
 import os
 import pickle
 import signal
 import subprocess
 import sys
+from typing import Optional
 
-from workflow import Workflow
+from workflow import Workflow3
 
 __all__ = ["is_running", "run_in_background"]
 
 _wf = None
 
 
-def wf():
+def wf() -> Workflow:
+    """Get the current wf or create a new one if it doesn't exist
+
+    Returns:
+        Workflow: an alfred workflow
+    """
     global _wf
     if _wf is None:
         _wf = Workflow()
     return _wf
 
 
-def _log():
+def _log() -> Logger:
     return wf().logger
 
 
-def _arg_cache(name):
+def _arg_cache(name: str) -> str:
     """Return path to pickle cache file for arguments.
 
-    :param name: name of task
-    :type name: ``unicode``
-    :returns: Path to cache file
-    :rtype: ``unicode`` filepath
+    Args:
+        name (str): name of task
 
+    Returns:
+        str: path to cache file
     """
     return wf().cachefile(name + ".argcache")
 
 
-def _pid_file(name):
-    """Return path to PID file for ``name``.
+def _pid_file(name: str) -> str:
+    """Return path to PID file for `name`
 
-    :param name: name of task
-    :type name: ``unicode``
-    :returns: Path to PID file for task
-    :rtype: ``unicode`` filepath
+    Args:
+        name (str): name of task
 
+    Returns:
+        str: path to PID file for task
     """
     return wf().cachefile(name + ".pid")
 
 
-def _process_exists(pid):
-    """Check if a process with PID ``pid`` exists.
+def _process_exists(pid: int) -> bool:
+    """Check if a process with PID `pid` exists
 
-    :param pid: PID to check
-    :type pid: ``int``
-    :returns: ``True`` if process exists, else ``False``
-    :rtype: ``Boolean``
+    Args:
+        pid (int): PID to check
 
+    Returns:
+        bool: if the given process exists
     """
     try:
         os.kill(pid, 0)
@@ -81,7 +79,7 @@ def _process_exists(pid):
     return True
 
 
-def _job_pid(name):
+def _job_pid(name: str) -> Optional[int]:
     """Get PID of job or `None` if job does not exist.
 
     Args:
@@ -94,11 +92,9 @@ def _job_pid(name):
     if not os.path.exists(pidfile):
         return
 
-    with open(pidfile, "rb") as fp:
+    with open(pidfile, 'rb') as fp:
         read = fp.read()
-        # print(str(read))
         pid = int.from_bytes(read, sys.byteorder)
-        # print(pid)
 
         if _process_exists(pid):
             return pid
@@ -106,14 +102,14 @@ def _job_pid(name):
     os.unlink(pidfile)
 
 
-def is_running(name):
-    """Test whether task ``name`` is currently running.
+def is_running(name: str) -> bool:
+    """Test whether task `name` is currently running
 
-    :param name: name of task
-    :type name: unicode
-    :returns: ``True`` if task with name ``name`` is running, else ``False``
-    :rtype: bool
+    Args:
+        name (str): name of task
 
+    Returns:
+        bool: if the given task is running
     """
     if _job_pid(name) is not None:
         return True
@@ -122,7 +118,7 @@ def is_running(name):
 
 
 def _background(
-    pidfile, stdin="/dev/null", stdout="/dev/null", stderr="/dev/null"
+    pidfile, stdin='/dev/null', stdout="/dev/null", stderr="/dev/null"
 ):  # pragma: no cover
     """Fork the current process into a background daemon.
 
@@ -200,7 +196,7 @@ def run_in_background(name, args, **kwargs):
     r"""Cache arguments then call this script again via :func:`subprocess.call`.
 
     :param name: name of job
-    :type name: unicode
+    :type name: str
     :param args: arguments passed as first argument to :func:`subprocess.call`
     :param \**kwargs: keyword arguments to :func:`subprocess.call`
     :returns: exit code of sub-process

@@ -54,7 +54,7 @@ from .workflow import (
     Workflow,
     manager,
 )
-from .workflow3 import Variables, Workflow3
+from .workflow import Variables, Workflow3
 
 __title__ = "Alfred-Workflow"
 __version__ = open(os.path.join(os.path.dirname(__file__), "version")).read()

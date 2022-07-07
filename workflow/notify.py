@@ -8,7 +8,6 @@
 # Created on 2015-11-26
 #
 
-# TODO: Exclude this module from test and code coverage in py2.6
 
 """
 Post notifications via the macOS Notification Center.
@@ -87,7 +86,7 @@ def notifier_program():
     """Return path to notifier applet executable.
 
     Returns:
-        unicode: Path to Notify.app ``applet`` executable.
+        str: Path to Notify.app ``applet`` executable.
     """
     return wf().datafile("Notify.app/Contents/MacOS/applet")
 
@@ -96,7 +95,7 @@ def notifier_icon_path():
     """Return path to icon file in installed Notify.app.
 
     Returns:
-        unicode: Path to ``applet.icns`` within the app bundle.
+        str: Path to ``applet.icns`` within the app bundle.
     """
     return wf().datafile("Notify.app/Contents/Resources/applet.icns")
 
@@ -282,7 +281,8 @@ def png_to_icns(png_path, icns_path):
             raise RuntimeError("iconset exited with %d" % retcode)
 
         if not os.path.exists(icns_path):  # pragma: nocover
-            raise ValueError("generated ICNS file not found: " + repr(icns_path))
+            raise ValueError(
+                "generated ICNS file not found: " + repr(icns_path))
     finally:
         try:
             shutil.rmtree(tempdir)
@@ -295,10 +295,10 @@ if __name__ == "__main__":  # pragma: nocover
     # This won't work on 2.6, as `argparse` isn't available
     # by default.
     import argparse
-    from unicodedata import normalize
+    from strdata import normalize
 
     def ustr(s):
-        """Coerce `s` to normalised Unicode."""
+        """Coerce `s` to normalised str."""
         return normalize("NFD", s.decode("utf-8"))
 
     p = argparse.ArgumentParser()
@@ -306,7 +306,8 @@ if __name__ == "__main__":  # pragma: nocover
     p.add_argument(
         "-l", "--list-sounds", help="Show available sounds.", action="store_true"
     )
-    p.add_argument("-t", "--title", help="Notification title.", type=ustr, default="")
+    p.add_argument("-t", "--title", help="Notification title.",
+                   type=ustr, default="")
     p.add_argument(
         "-s", "--sound", type=ustr, help="Optional notification sound.", default=""
     )
@@ -328,7 +329,8 @@ if __name__ == "__main__":  # pragma: nocover
             os.path.splitext(os.path.basename(o.png))[0] + ".icns",
         )
 
-        print("converting {0!r} to {1!r} ...".format(o.png, icns), file=sys.stderr)
+        print("converting {0!r} to {1!r} ...".format(
+            o.png, icns), file=sys.stderr)
 
         if os.path.exists(icns):
             raise ValueError("destination file already exists: " + icns)
